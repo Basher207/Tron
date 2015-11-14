@@ -8,8 +8,11 @@ abstract class DynamicObject extends GameObject {
 class Bike extends DynamicObject {
   int speed;
   Direction direction;
+  Direction nextFrameDirection = Direction.NON;
+  boolean turnnedThisFrame;
   color bikeColor;
   boolean alive = true;
+  int lives;
   ArrayList <Trail> trails;
   Trail currentTrail;
   Bike (GridVector position, Direction direction, int speed, color bikeColor) {
@@ -17,6 +20,7 @@ class Bike extends DynamicObject {
     this.direction      = direction;
     this.speed          = speed;
     this.bikeColor = bikeColor;
+    lives = 5;
     trails = new ArrayList<Trail> ();
     currentTrail = new Trail (position.Get(), bikeColor);
     trails.add (currentTrail);
@@ -32,21 +36,29 @@ class Bike extends DynamicObject {
   void Update () {
     if (!alive)
       return;
-    if (frameCount % 1 == 0) {
-      for (int i = 0; i < speed; i++) {
-        GridVector velocity = GridFromDirection (direction);
-        GridVector newPosition = position.Get ();
-        newPosition.Add (velocity);
-        
-        if (MoveToPoint (newPosition)) 
-          alive = false;
-        
-        position.Set (newPosition);
-        currentTrail.endPosition.Set(position);
+    for (int i = 0; i < speed; i++) {
+      GridVector velocity = GridFromDirection (direction);
+      GridVector newPosition = position.Get ();
+      newPosition.Add (velocity);
+      if (MoveToPoint (newPosition)) {
+        alive = false;
+        return;
       }
+      position.Set (newPosition);
+      currentTrail.endPosition.Set(position);
+    }
+    turnnedThisFrame = false;
+    if (nextFrameDirection != Direction.NON) {
+      ChangeDirection (nextFrameDirection);
+      nextFrameDirection = Direction.NON;
     }
   }
   void ChangeDirection (Direction direction) {
+    if (turnnedThisFrame) {
+      nextFrameDirection = direction;
+      return;
+    }
+    turnnedThisFrame = true;
     currentTrail.endPosition.Set (position);
     currentTrail = new Trail (position.Get (), bikeColor);
     trails.add (currentTrail);

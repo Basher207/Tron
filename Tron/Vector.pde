@@ -51,9 +51,10 @@ class GridVector {
 }
 enum Direction {
   UP, 
-    DOWN, 
-    LEFT, 
-    RIGHT
+  DOWN, 
+  LEFT, 
+  RIGHT,
+  NON
 }
   boolean OppositeDirection (Direction direction, Direction otherDirection) {
 
