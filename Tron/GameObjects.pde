@@ -26,6 +26,8 @@ class Bike extends DynamicObject {
     trails.add (currentTrail);
   }
   void Render () {
+    for (Trail trail : trails) 
+      trail.Render ();
     if (!alive)
       return;
     rectMode (CENTER);
@@ -66,8 +68,8 @@ class Bike extends DynamicObject {
       this.direction = direction;
   }
   boolean MoveToPoint (GridVector point) {
-    for (Bike bike : bikes) 
-      for (Trail trail : bike.trails) {
+    for (Player player : game.players) 
+      for (Trail trail : player.bike.trails) {
         if (trail.TouchedLine (point)) {
           return true;
         }

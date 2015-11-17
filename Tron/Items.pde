@@ -2,9 +2,9 @@ abstract class Item extends GameObject {
   int size;
   abstract void Pickup (Bike pickedUpBike);
   void CheckPickup () {
-    for (Bike bike : bikes) {
-      if (abs (bike.position.x - position.x) < size / 2 && abs (bike.position.y - position.y) < size / 2) 
-        Pickup (bike);
+    for (Player player : game.players) {
+      if (abs (player.bike.position.x - position.x) < size / 2 && abs (player.bike.position.y - position.y) < size / 2) 
+        Pickup (player.bike);
     }
   }
 }
@@ -29,9 +29,10 @@ class SpeedBoost extends Item {
     popMatrix ();
   }
   void Pickup (Bike pickedUpBike) {
-    for (Bike bike : bikes) {
-      bike.speed += 5;
-      items.remove (this);
+    for (Player player : game.players) {
+      if (player.bike != pickedUpBike) 
+        player.bike.speed += 2;
     }
+    game.items.remove (this);
   }
 }
