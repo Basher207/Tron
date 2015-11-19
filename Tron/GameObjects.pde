@@ -75,26 +75,38 @@ class Bike extends DynamicObject {
         }
       }
     if (point.x < 0) {
+      alive = false;
+      /*
       currentTrail.endPosition.Set (position);
       point.x = width - point.x;
       currentTrail = new Trail (point, bikeColor);
       trails.add (currentTrail);
+      */
     } else if (point.x > width) {
+      alive = false;
+      /*
       currentTrail.endPosition.Set (point);
       point.x = width - point.x;
       currentTrail = new Trail (point, bikeColor);
       trails.add (currentTrail);
+      */
     }
     if (point.y < 0) {
+      alive = false;
+      /*
       currentTrail.endPosition.Set (position);
       point.y = height - point.y;
       currentTrail = new Trail (point, bikeColor);
       trails.add (currentTrail);
+      */
     } else if (point.y > height) {
+      alive = false;
+      /*
       currentTrail.endPosition.Set (point);
       point.y = height - point.y;
       currentTrail = new Trail (point, bikeColor);
       trails.add (currentTrail);
+      */
     }
     return false;
   }
