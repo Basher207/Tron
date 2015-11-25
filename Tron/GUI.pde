@@ -8,6 +8,6 @@ class ScoreBoard extends GUI {
     this.bike = bike;
   }
   void Render () {
-    text (bike.lives, position.x, position.y);
+    //text (bike.lives, position.x, position.y);
   }
 }

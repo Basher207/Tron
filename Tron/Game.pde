@@ -2,9 +2,16 @@ class Game {
   ArrayList <Player>  players;
   ArrayList <GUI>     guis;
   ArrayList <Item>    items;
+
+  boolean paused = false;
+  Menu menu;
+
+
+  int framesSinceStart = 0;
   Game () {
     Reset ();
     SetupLevel1 ();
+    paused = false;
   }
   void Reset () {
     players = new ArrayList <Player> ();
@@ -13,16 +20,17 @@ class Game {
   }
   void SetupLevel1 () {
     Reset ();
-    //items.add (new SpeedBoost (new GridVector (width/2, height/2), 30));
-    Bike bike1 = new Bike (new GridVector (width/2 + 248, height/2), Direction.LEFT, 2, color (255, 0, 0  ));
-    Bike bike2 = new Bike (new GridVector (width/2 - 248, height/2), Direction.RIGHT, 2, color (0, 0, 255));
-    Bike bike3 = new Bike (new GridVector (width/2, height/2 - 252), Direction.DOWN, 2, color (0, 255, 0  ));
-    Bike bike4 = new Bike (new GridVector (width/2, height/2 + 252), Direction.UP, 2, color (200, 70, 250));
+    menu = new Menu ();
 
-    InputHandler inputHandler1 = new InputArrowController (UP, DOWN, LEFT, RIGHT, bike1);
-    InputHandler inputHandler2 = new InputController      ('t', 'g', 'f', 'h', bike2);
-    InputHandler inputHandler3 = new InputController      ('i', 'k', 'j', 'l', bike3);
-    InputHandler inputHandler4 = new InputController      ('w', 's', 'a', 'd', bike4);
+    Bike bike1 = new Bike (new GridVector (width/2 + 248, height/2), Direction.LEFT , 2, color (255, 0  , 0  ));
+    Bike bike2 = new Bike (new GridVector (width/2 - 248, height/2), Direction.RIGHT, 2, color (0  , 0  , 255));
+    Bike bike3 = new Bike (new GridVector (width/2, height/2 - 252), Direction.DOWN , 2, color (0  , 255, 0  ));
+    Bike bike4 = new Bike (new GridVector (width/2, height/2 + 252), Direction.UP   , 2, color (200, 70 , 250));
+
+    InputHandler inputHandler1 = new InputArrowController (UP , DOWN, LEFT, RIGHT, bike1);
+    InputHandler inputHandler2 = new InputController      ('t', 'g' , 'f' , 'h'  , bike2);
+    InputHandler inputHandler3 = new InputController      ('i', 'k' , 'j' , 'l'  , bike3);
+    InputHandler inputHandler4 = new InputController      ('w', 's' , 'a' , 'd'  , bike4);
 
     players.add (new Player (bike1, inputHandler1));
     players.add (new Player (bike2, inputHandler2));
@@ -31,18 +39,26 @@ class Game {
   }
   void Update () {
     background (0);
-    for (Player player : players) {
-      player.Update ();
-    }
+    if (!paused)
+      for (Player player : players)
+        player.Update ();
+      
     for (Player player : players) {
       player.Render ();
     }
     for (int i = items.size () - 1; i >= 0; i--) {
       items.get (i).Render ();
-      items.get (i).CheckPickup ();
+      if (!paused)
+        items.get (i).CheckPickup ();
     }
     for (Player player : players) {
       player.Render ();
+    }
+    if (!paused) {
+      if (framesSinceStart++ % 600 == 0)
+        items.add (new GhostPickup (new GridVector ((int)random (width), (int)random (height)), 50, 50));
+    } else {
+      menu.Update ();
     }
   }
   void KeyPressed () {
@@ -51,6 +67,12 @@ class Game {
     }
     if (key == ' ')
       setup ();
+  }
+  void MousePressed () {
+    menu.MousePressed ();
+  }
+  void SetPause (boolean pause) {
+    paused = pause;
   }
 }
 class Player {

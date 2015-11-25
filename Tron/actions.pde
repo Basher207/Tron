@@ -1,0 +1,3 @@
+interface FunctionContainer {
+  void Function ();
+}
