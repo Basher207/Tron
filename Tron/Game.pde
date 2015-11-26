@@ -29,8 +29,9 @@ class Game {
     Bike bike3 = new Bike (new GridVector (width/2, height/2 - 250), Direction.DOWN , 2, color (0  , 255, 0  ));
     Bike bike4 = new Bike (new GridVector (width/2, height/2 + 250), Direction.UP   , 2, color (200, 70 , 250));
     Bike bike5 = new Bike (new GridVector (width/2 - 250, height/2 - 250), Direction.RIGHT, 2, color(255,255,255));
-    //Bike ps4Bike = new Bike (new GridVector (50, 50), Direction.DOWN , 2, color (0  , 255, 0  ));
-    //InputJoystickController ps4Controller = new InputJoystickController (controlIO.getMatchedDevice(CONFIGFILEPATH), ps4Bike);
+
+    Bike bikep4= new Bike (new GridVector (width - 50, height - 50), Direction.DOWN , 2, color (0  , 255, 0  ));
+    InputJoystickController ps4Controller = new InputJoystickController (controlIO.getMatchedDevice(CONFIGFILEPATH), ps4Bike);
 
     KeyboardHandler inputHandler1 = new InputArrowController (UP , DOWN, LEFT, RIGHT, bike1);
     KeyboardHandler inputHandler2 = new InputController      ('t', 'g' , 'f' , 'h'  , bike2);
@@ -38,12 +39,12 @@ class Game {
     KeyboardHandler inputHandler4 = new InputController      ('w', 's' , 'a' , 'd'  , bike4);
     KeyboardHandler inputHandler5 = new InputController      ('z', 'x' , 'c' , 'v'  , bike5);
 
-    //players.add (new JoyStickPlayer (ps4Bike, ps4Controller));
-    players.add (new KeyBoardPlayer (bike1, inputHandler1));
-    players.add (new KeyBoardPlayer (bike2, inputHandler2));
-    players.add (new KeyBoardPlayer (bike3, inputHandler3));
-    players.add (new KeyBoardPlayer (bike4, inputHandler4));
-    players.add (new KeyBoardPlayer (bike5, inputHandler5));
+    players.add (new JoyStickPlayer (bikep4, ps4Controller));
+    players.add (new KeyBoardPlayer (bike1,  inputHandler1));
+    players.add (new KeyBoardPlayer (bike2,  inputHandler2));
+    players.add (new KeyBoardPlayer (bike3,  inputHandler3));
+    players.add (new KeyBoardPlayer (bike4,  inputHandler4));
+    players.add (new KeyBoardPlayer (bike5,  inputHandler5));
   }
   void Update () {
     background (0);

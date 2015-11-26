@@ -64,17 +64,17 @@ class InputJoystickController {
     this.controllingBike = controllingBike;
   }
   void Update () {
-    //if (gpad.getButton ("UP"   ).pressed()) {
-    //  controllingBike.ChangeDirection (Direction.UP);
-    //} 
-    //if (gpad.getButton ("DOWN" ).pressed()) {
-    //  controllingBike.ChangeDirection (Direction.DOWN);
-    //} 
-    //if (gpad.getButton ("LEFT" ).pressed()) {
-    //  controllingBike.ChangeDirection (Direction.LEFT);
-    //} 
-    //if (gpad.getButton ("RIGHT").pressed()) {
-    //  controllingBike.ChangeDirection (Direction.RIGHT);
-    //} 
+    if (gpad.getButton ("UP"   ).pressed()) {
+      controllingBike.ChangeDirection (Direction.UP);
+    } 
+    if (gpad.getButton ("DOWN" ).pressed()) {
+      controllingBike.ChangeDirection (Direction.DOWN);
+    } 
+    if (gpad.getButton ("LEFT" ).pressed()) {
+      controllingBike.ChangeDirection (Direction.LEFT);
+    } 
+    if (gpad.getButton ("RIGHT").pressed()) {
+      controllingBike.ChangeDirection (Direction.RIGHT);
+    } 
   }
 }
