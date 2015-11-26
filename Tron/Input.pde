@@ -1,8 +1,15 @@
-abstract class InputHandler {
+import net.java.games.input.*;
+import org.gamecontrolplus.*;
+import org.gamecontrolplus.gui.*;
+
+ControlIO controlIO;
+public final static String CONFIGFILEPATH = "gamepad_P1";
+
+abstract class KeyboardHandler {
+  Bike controllingBike;
    abstract void KeyPressed ();
 }
-class InputController extends InputHandler {
-  Bike controllingBike;
+class InputController extends KeyboardHandler {
   char goUp, goDown, goLeft, goRight;
   
   InputController (char goUp, char goDown, char goLeft, char goRight, Bike controllingBike) {
@@ -25,8 +32,7 @@ class InputController extends InputHandler {
        controllingBike.ChangeDirection(Direction.RIGHT);
   }
 }
-class InputArrowController extends InputHandler {
-  Bike controllingBike;
+class InputArrowController extends KeyboardHandler {
   int goUp, goDown, goLeft, goRight;
   
   InputArrowController (int goUp, int goDown, int goLeft, int goRight, Bike controllingBike) {
@@ -47,5 +53,28 @@ class InputArrowController extends InputHandler {
        controllingBike.ChangeDirection(Direction.LEFT );
    else if (keyCode == goRight)
        controllingBike.ChangeDirection(Direction.RIGHT);
+  }
+}
+class InputJoystickController {
+  ControlDevice gpad;
+  Bike controllingBike;
+  InputJoystickController (ControlDevice gpad, Bike controllingBike) {
+
+    this.gpad = gpad;
+    this.controllingBike = controllingBike;
+  }
+  void Update () {
+    //if (gpad.getButton ("UP"   ).pressed()) {
+    //  controllingBike.ChangeDirection (Direction.UP);
+    //} 
+    //if (gpad.getButton ("DOWN" ).pressed()) {
+    //  controllingBike.ChangeDirection (Direction.DOWN);
+    //} 
+    //if (gpad.getButton ("LEFT" ).pressed()) {
+    //  controllingBike.ChangeDirection (Direction.LEFT);
+    //} 
+    //if (gpad.getButton ("RIGHT").pressed()) {
+    //  controllingBike.ChangeDirection (Direction.RIGHT);
+    //} 
   }
 }

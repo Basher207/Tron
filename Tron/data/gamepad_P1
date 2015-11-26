@@ -1,0 +1,3 @@
+gamepad_P1
+DOWN	Move down	1	BUTTON	0	0	0.0	0.0
+RIGHT	Move right	1	BUTTON	1	0	0.0	0.0

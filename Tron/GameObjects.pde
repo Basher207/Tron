@@ -22,11 +22,11 @@ class Trail extends GameObject {
     boolean trailVertical = this.endPosition.x - this.position.x == 0;
     if (trailVertical) {
       float trailLength = abs(position.y - endPosition.y);
-      if (checkPoint.x == position.x && (abs(checkPoint.y - position.y) < trailLength && abs(checkPoint.y - endPosition.y) < trailLength))
+      if (checkPoint.x == position.x && (abs(checkPoint.y - position.y) <= trailLength && abs(checkPoint.y - endPosition.y) <= trailLength))
         return true;
     }
     float trailLength = abs(position.x - endPosition.x);
-    if (checkPoint.y == position.y && (abs(checkPoint.x - position.x) < trailLength && abs(checkPoint.x - endPosition.x) < trailLength)) 
+    if (checkPoint.y == position.y && (abs(checkPoint.x - position.x) <= trailLength && abs(checkPoint.x - endPosition.x) <= trailLength)) 
       return true;
     return false;
   }

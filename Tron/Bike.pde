@@ -52,6 +52,7 @@ class Bike extends DynamicObject {
       newPosition.Add (velocity);
       if (trailing && MoveToPoint (newPosition)) {
         alive = false;
+        PlayCrash ();
         return;
       }
       position.Set (newPosition);

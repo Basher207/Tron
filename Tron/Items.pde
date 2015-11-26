@@ -45,5 +45,15 @@ class GhostPickup extends Item {
       }
     }
     game.items.remove (this);
+    PlayPickup ();
   }
 }
+//class KillBlock extends Item {
+//  KillBlock (GridVector position, int size) {
+//    this.size     = size;
+//    this.position = position;
+//  }
+//  void Pickup (Bike pickedUpBike) {
+//    for (pickedUpBike )
+//  }
+//}

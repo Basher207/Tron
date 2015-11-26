@@ -1,21 +1,26 @@
 Game game;
 
+ControlIO control;
+Configuration config;
+ControlDevice gpad;
+
 void setup () {
-  //size (1000,1000,P2D);
+  //size (700, 700,P3D);
   fullScreen (P2D);
   pixelDensity (displayDensity ());
-  game = new Game ();
+  
   smooth (0);
+  SetGame ();
+}
+void SetGame () {
+  game = new Game ();
 }
 void draw () {
   game.Update ();
 }
 void keyPressed () {
   game.KeyPressed ();
-  if (key == 'e')
-    game.paused = !game.paused;
 }
 void mousePressed () {
 	game.MousePressed ();
-  game.SetPause (!game.paused);
 }
