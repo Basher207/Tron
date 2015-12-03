@@ -3,8 +3,11 @@ import org.gamecontrolplus.*;
 import org.gamecontrolplus.gui.*;
 
 ControlIO controlIO;
-public final static String CONFIGFILEPATH = "gamepad_P1";
 
+public final static String CONFIGFILEPATH = "gamepad_P1";
+void InputInit () {
+  controlIO = ControlIO.getInstance(this);
+}
 abstract class KeyboardHandler {
   Bike controllingBike;
    abstract void KeyPressed ();
@@ -70,11 +73,11 @@ class InputJoystickController {
     if (gpad.getButton ("DOWN" ).pressed()) {
       controllingBike.ChangeDirection (Direction.DOWN);
     } 
-    if (gpad.getButton ("LEFT" ).pressed()) {
-      controllingBike.ChangeDirection (Direction.LEFT);
-    } 
-    if (gpad.getButton ("RIGHT").pressed()) {
-      controllingBike.ChangeDirection (Direction.RIGHT);
-    } 
+    //if (gpad.getButton ("LEFT" ).pressed()) {
+    //  controllingBike.ChangeDirection (Direction.LEFT);
+    //} 
+    //if (gpad.getButton ("RIGHT").pressed()) {
+    //  controllingBike.ChangeDirection (Direction.RIGHT);
+    //} 
   }
 }

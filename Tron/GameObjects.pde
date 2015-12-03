@@ -5,17 +5,20 @@ abstract class GameObject {
 abstract class DynamicObject extends GameObject {
   abstract void Update ();
 }
+interface ColoredObject {
+  public color ObjectColor();
+}
 class Trail extends GameObject {
   GridVector endPosition;
-  Bike bike;
-  Trail (GridVector position, Bike bike) {
+  ColoredObject bike;
+  Trail (GridVector position, ColoredObject bike) {
     this.position = position.Get ();
     this.endPosition = position.Get();
     this.bike = bike;
   }
   void Render () {
     strokeWeight (1);
-    stroke (bike.bikeColor);
+    stroke (bike.ObjectColor());
     line (position.x, position.y, endPosition.x, endPosition.y);
   }
   boolean TouchedLine (GridVector checkPoint) {

@@ -48,12 +48,26 @@ class GhostPickup extends Item {
     PlayPickup ();
   }
 }
-//class KillBlock extends Item {
-//  KillBlock (GridVector position, int size) {
-//    this.size     = size;
-//    this.position = position;
-//  }
-//  void Pickup (Bike pickedUpBike) {
-//    for (pickedUpBike )
-//  }
-//}
+class KillBlock extends Item {
+  KillBlock (GridVector position, int size) {
+    this.size     = size;
+    this.position = position;
+  }
+  void Render () {
+    rectMode(CENTER);
+    pushMatrix ();
+    fill (255);
+    stroke (255, 165, 0);
+    translate (position.x, position.y);
+    rect (0, 0, size, size);
+    popMatrix ();
+  }
+  void Pickup (Bike pickedUpBike) {
+    for (Player player : game.players) {
+      if (player.bike == pickedUpBike) {
+        player.bike.alive = false;
+        break;
+      }
+    }
+  }
+}

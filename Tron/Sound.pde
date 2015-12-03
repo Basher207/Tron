@@ -9,14 +9,14 @@ AudioPlayer crash;
 AudioPlayer pickup;
 
 void SetupSound () {
-  minim = new Minim (this);
+  //minim = new Minim (this);
   //crash = minim.loadFile("Crash");
-  pickup = minim.loadFile("Pickup.aif");
+  //pickup = minim.loadFile("Pickup.aif");
 }
 void PlayCrash () {
   //crash.play ();
 }
 void PlayPickup () {
-  pickup.rewind ();
-  pickup.play ();
+  //pickup.rewind ();
+  //pickup.play ();
 }

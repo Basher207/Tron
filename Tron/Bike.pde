@@ -1,4 +1,4 @@
-class Bike extends DynamicObject {
+class Bike extends DynamicObject implements ColoredObject {
   final int         defaultSpeed;                       //Bikes default speed
   int               speed;                              //Bikes current speed, variable to change
   Direction         direction;                          //Direction of movement
@@ -100,13 +100,19 @@ class Bike extends DynamicObject {
      trails.add (currentTrail);
     }
   }
+  public color ObjectColor () {
+    return bikeColor;
+  }
   boolean MoveToPoint (GridVector point) {
     for (Player player : game.players) 
-      for (Trail trail : player.bike.trails) {
-        if (trail.TouchedLine (point)) {
+      for (Trail trail : player.bike.trails)
+        if (trail.TouchedLine (point))
           return true;
-        }
-      }
+    for (Obstical obstical : game.obsticals)
+      for (Trail trail : obstical.trails)
+        if (trail.TouchedLine(point))
+          return true;
+
     if (point.x < 0) {
       return true;
       //currentTrail.endPosition.Set (position);
