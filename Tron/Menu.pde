@@ -6,6 +6,8 @@ class Menu {
 		buttons   = new ArrayList <Button> ();
 		buttons.add   (new Button (new Bounds2D (new GridVector (width/2 - 50,height/2 - 50), new GridVector (width/2 + 50,height/2 + 50)), "Restart", 
 					   new FunctionContainer () {public void Function () {SetGame ();}}));
+          buttons.add   (new Button (new Bounds2D (new GridVector (width/2 - 50,height/2 + 100), new GridVector (width/2 + 50,height/2 + 200)), "ExitGame", 
+                                     new FunctionContainer () {public void Function () {exit ();}}));
 		menuItems.add (new Plane  (new Bounds2D (new GridVector (0,0), new GridVector (width,height)), color (0, 100)));
 	}
 	void Update () {

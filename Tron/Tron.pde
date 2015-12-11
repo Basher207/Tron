@@ -2,11 +2,10 @@ Game game;
 void setup () {
   fullScreen (P2D);
   smooth (0);
-  loadAllImages();
+  game = new Game();
   SetGame ();
 }
 void SetGame () {
-  game = new Game();
   game.SetupLevel1 ();
 }
 void draw () {
@@ -14,4 +13,7 @@ void draw () {
 }
 void keyPressed () {
   game.KeyPressed ();
+}
+void mousePressed () {
+ game.MousePressed ();
 }

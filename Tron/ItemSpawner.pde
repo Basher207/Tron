@@ -5,7 +5,7 @@ class ItemSpawner extends DynamicObject {
   Item spawnedItem = null;
   ItemSpawner (GridVector position, int timeBetweenSpawns) {
     super(position);
-    this.timeBetweenSpawns = coolDown = timeBetweenSpawns;
+    this.timeBetweenSpawns = coolDown = timeBetweenSpawns + (int)random (-280, 280);
   }
   void Render () {
     pushMatrix();
@@ -14,30 +14,29 @@ class ItemSpawner extends DynamicObject {
     rotate (angle);
     rectMode(CENTER);
     noFill ();
-    stroke(255,50);
-    rect (0, 0, 10, 10);
+    stroke(255, 50);
+    float size = (float)coolDown / timeBetweenSpawns * 40;
+    rect (0, 0, size, size);
     popMatrix();
   }
   void Update () {
-    println(spawnedItem);
-    if ((spawnedItem == null ? true : spawnedItem.pickedUp))
+    if (((spawnedItem == null) ? true : spawnedItem.pickedUp)) {
       coolDown--;
-    if (coolDown < 0 && (spawnedItem == null ? true : spawnedItem.pickedUp)) {
-       spawnedItem = RandomItemSpawn ();
-       coolDown = timeBetweenSpawns;
-    } else {
-      coolDown--; 
+      if (coolDown < 0) {
+        spawnedItem = RandomItemSpawn ();
+        coolDown = timeBetweenSpawns;
+      }
     }
   }
   Item RandomItemSpawn () {
     int ranIndex = floor(random (0, 2));
     switch (ranIndex) {
-      case 0:
-        return new BlasterPickup (position.Get(), 50);
-      case 1:
-        return new GhostPickup (position.Get(), 50);
-      case 2:
-        return new SpeedPickup (position.Get(), 50);
+    case 0:
+      return new BlasterPickup (position.Get(), 50);
+    case 1:
+      return new GhostPickup (position.Get(), 50);
+    case 2:
+      return new SpeedPickup (position.Get(), 50);
     }
     return new BlasterPickup (position.Get(), 50);
   }

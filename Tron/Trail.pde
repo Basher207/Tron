@@ -53,7 +53,7 @@ class Trail extends GameObject {
     }
     if (bound.max.x > min.x && bound.min.x < max.x && bound.min.y < max.y && bound.max.y > min.y) {
       if (bound.max.x < max.x && bound.min.x > min.x) {
-        Trail leftSideOfTrail = new Trail (min.Get(), bike, false);
+        Trail leftSideOfTrail = new Trail (min.Get(), bike, true);
         leftSideOfTrail.endPosition = new GridVector (bound.min.x, endPosition.y);
         min.x = bound.max.x;
       } else if (bound.min.x > min.x) {
