@@ -1,9 +1,11 @@
 class Game {
-  ArrayList <Player>  players;
-  ArrayList <Obstical>obsticals;
-  ArrayList <GUI>     guis;
-  ArrayList <Item>    items;
-
+  ArrayList <Player     > players;
+  ArrayList <Obstical   > obsticals;
+  ArrayList <GUI        > guis;
+  ArrayList <Item       > items;
+  ArrayList <ItemSpawner> itemSpawners;
+  ArrayList <Trail      > trails;
+  
   boolean paused = false;
   Menu menu;
 
@@ -11,16 +13,16 @@ class Game {
   int framesSinceStart = 0;
   
   Game () {
-    Reset ();
-    SetupLevel1 ();
-    SetupSound ();
     SetPause (false);
   }
   void Reset () {
-    players   = new ArrayList <Player> ();
-    guis      = new ArrayList <GUI> ();
-    obsticals = new ArrayList<Obstical> ();
-    items     = new ArrayList <Item> ();
+    trails       = new ArrayList <Trail      > ();
+    players      = new ArrayList <Player     > ();
+    guis         = new ArrayList <GUI        > ();
+    obsticals    = new ArrayList <Obstical   > ();
+    items        = new ArrayList <Item       > ();
+    itemSpawners = new ArrayList <ItemSpawner> ();
+    SetupSound ();
   }
   void SetupLevel1 () {
     Reset ();
@@ -31,7 +33,11 @@ class Game {
     };
     obsticals.add(new Obstical (verts, color(255,255,255)));
     //items.add (new KillBlock (new GridVector (round (width * 0.4), round (height * 0.4)), 50));
-
+    itemSpawners.add(new ItemSpawner(new GridVector (width / 4, height / 4), 300));
+    itemSpawners.add(new ItemSpawner(new GridVector (width - width / 4, height - height / 4), 300));
+    itemSpawners.add(new ItemSpawner(new GridVector (width - width / 4, height / 4), 300));
+    itemSpawners.add(new ItemSpawner(new GridVector (width / 4, height - height / 4), 300));
+    
     Bike bike1 = new Bike (new GridVector (width/2 + 250, height/2), Direction.LEFT , 2, color (255, 0  , 0  ));
     Bike bike2 = new Bike (new GridVector (width/2 - 250, height/2), Direction.RIGHT, 2, color (0  , 0  , 255));
     Bike bike3 = new Bike (new GridVector (width/2, height/2 - 250), Direction.DOWN , 2, color (0  , 255, 0  ));
@@ -59,11 +65,9 @@ class Game {
     if (!paused)
       for (Player player : players)
         player.Update ();
-    
-    for (Obstical obstical : obsticals) {
-      obstical.Render ();
+    for (Trail trail : trails) {
+      trail.Render ();
     }
-
     for (Player player : players) {
       player.Render ();
     }
@@ -73,12 +77,14 @@ class Game {
         items.get (i).CheckPickup ();
     }
     if (!paused) {
-      if (framesSinceStart++ % 300 == 200)
-        if (items.size () < 2)
-          items.add (new GhostPickup (new GridVector ((int)random (width), (int)random (height)), 50, 50));
+        for (ItemSpawner itemSpawner : itemSpawners) {
+          itemSpawner.Update();
+          itemSpawner.Render();
+        }
     } else {
       menu.Update ();
     }
+    framesSinceStart++;
   }
   void KeyPressed () {
     for (Player player : players) {
@@ -90,7 +96,8 @@ class Game {
       game.SetPause (!game.paused);
   }
   void MousePressed () {
-    menu.MousePressed ();
+    if (paused)
+      menu.MousePressed ();
   }
   void SetPause (boolean pause) {
     paused = pause;
@@ -100,12 +107,15 @@ abstract class Player {
   Bike bike;
   abstract void Update ();
   abstract void Render ();
+  Player (Bike bike) {
+    this.bike = bike;
+  }
   abstract void KeyPressed ();
 }
 class KeyBoardPlayer extends Player {
   KeyboardHandler inputHandler;
   KeyBoardPlayer (Bike bike, KeyboardHandler inputHandler) {
-    this.bike = bike;
+    super(bike);
     this.inputHandler = inputHandler;
   }
   void Update () {
@@ -121,7 +131,7 @@ class KeyBoardPlayer extends Player {
 class JoyStickPlayer extends Player {
   InputJoystickController inputHandler;
   JoyStickPlayer (Bike bike, InputJoystickController inputHandler) {
-    this.bike = bike;
+    super(bike);
     this.inputHandler = inputHandler;
   }
   void Update () {

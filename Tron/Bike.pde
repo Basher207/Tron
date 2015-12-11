@@ -9,7 +9,6 @@ class Bike extends DynamicObject implements ColoredObject {
   
   boolean           alive = true;                       //If the bike is currently alive
   boolean           trailing = true;
-  ArrayList <Trail> trails;
 
   Trail             currentTrail;
 
@@ -17,21 +16,17 @@ class Bike extends DynamicObject implements ColoredObject {
   int               timeForNormalState;
 
   Bike (GridVector position, Direction direction, int speed, color bikeColor) {
-    this.position         = position;
+    super(position);
     this.direction        = direction;
     this.defaultSpeed     = speed;
     this.speed            = this.defaultSpeed;
     this.defaultBikeColor = bikeColor;
     this.bikeColor        = this.defaultBikeColor;
     this.bikeColor        = bikeColor;
-    trails                = new ArrayList<Trail> ();
-    currentTrail          = new Trail (position.Get(), this);
+    currentTrail          = new Trail (position.Get(), this, true);
     state                 = new NormalState (this);
-    trails.add (currentTrail);
   }
   void Render () {
-    for (Trail trail : trails) 
-      trail.Render ();
     if (!alive)
       return;
     rectMode (CENTER);
@@ -96,22 +91,16 @@ class Bike extends DynamicObject implements ColoredObject {
   }
   void CreateTrail () {
     if (trailing) {
-     currentTrail = new Trail (position.Get (), this);
-     trails.add (currentTrail);
+     currentTrail = new Trail (position.Get (), this, true);
     }
   }
   public color ObjectColor () {
     return bikeColor;
   }
   boolean MoveToPoint (GridVector point) {
-    for (Player player : game.players) 
-      for (Trail trail : player.bike.trails)
-        if (trail.TouchedLine (point))
-          return true;
-    for (Obstical obstical : game.obsticals)
-      for (Trail trail : obstical.trails)
-        if (trail.TouchedLine(point))
-          return true;
+    for (Trail trail : game.trails)
+      if (trail.TouchedLine (point))
+        return true;
 
     if (point.x < 0) {
       return true;
@@ -152,13 +141,16 @@ class Bike extends DynamicObject implements ColoredObject {
 abstract class BikeState {
   Bike bike;
   int numberOfFrames;
+  BikeState (Bike bike, int numberOfFrames) {
+    this.bike = bike;
+    this.numberOfFrames = numberOfFrames;
+  }
   abstract int OnEnter ();
   abstract void  OnExit  ();
 }
 class NormalState extends BikeState {
   NormalState (Bike bike) {
-    this.bike = bike; 
-    numberOfFrames = Integer.MAX_VALUE;;
+    super(bike, Integer.MAX_VALUE);
   }
   int OnEnter () {
     bike.speed = bike.defaultSpeed;
@@ -170,8 +162,7 @@ class NormalState extends BikeState {
 }
 class NoColliderState extends BikeState {
   NoColliderState (Bike bike, int frames) {
-    this.bike      = bike;
-    numberOfFrames = frames;
+    super(bike,frames);
   }
   int OnEnter () {
     bike.SetTrailing (false);
@@ -179,5 +170,19 @@ class NoColliderState extends BikeState {
   }
   void  OnExit  () {
     bike.SetTrailing (true);
+  }
+}
+class SpeedBoost extends BikeState {
+  int speed;
+  SpeedBoost (Bike bike, int frames, int speed) {
+    super(bike, frames);
+    this.speed = speed;
+  }
+  int OnEnter () {
+    bike.speed = speed;
+    return numberOfFrames;
+  }
+  void  OnExit  () {
+    bike.speed = bike.defaultSpeed;
   }
 }
